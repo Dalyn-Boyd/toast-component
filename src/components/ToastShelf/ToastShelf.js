@@ -1,17 +1,23 @@
 import React from 'react';
 
+import { ToastContext } from '../ToastProvider';
+
 import Toast from '../Toast';
 import styles from './ToastShelf.module.css';
 
 function ToastShelf() {
+  const { toasts } = React.useContext(ToastContext);
   return (
-    <ol className={styles.wrapper}>
-      <li className={styles.toastWrapper}>
-        <Toast variant="notice">Example notice toast</Toast>
-      </li>
-      <li className={styles.toastWrapper}>
-        <Toast variant="error">Example error toast</Toast>
-      </li>
+    // this is an area where we expect things to change dynmically
+    // and it should look for changes in this area
+    <ol className={styles.wrapper} role='region' aria-live='polite' aria-label='Notifications'>
+      {toasts.map(({ id, variant, message }) => (
+        <li key={id} className={styles.toastWrapper}>
+          <Toast id={id} variant={variant}>
+            {message}
+          </Toast>
+        </li>
+      ))}
     </ol>
   );
 }
